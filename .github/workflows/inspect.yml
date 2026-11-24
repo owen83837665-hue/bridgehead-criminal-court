@@ -9,6 +9,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Check judicial website DNS
+        run: |
+          python - <<'PY'
+          import socket
+          import time
+
+          host = "di3.judicial.gov.tw"
+
+          for attempt in range(6):
+              try:
+                  result = socket.getaddrinfo(
+                      host, 443, type=socket.SOCK_STREAM
+                  )
+                  print("DNS resolution successful:")
+                  print(result)
+                  break
+              except socket.gaierror as e:
+                  print(f"DNS attempt {attempt + 1} failed: {e}")
+                  if attempt == 5:
+                      raise
+                  time.sleep(10)
+          PY
       - name: Checkout repository
         uses: actions/checkout@v4
 
