@@ -9,6 +9,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Diagnose network connectivity
+        run: |
+          echo "=== Google DNS ==="
+          getent ahosts google.com || true
+
+          echo "=== Judicial DNS ==="
+          getent ahosts csdi3.judicial.gov.tw || true
+
+          echo "=== Google HTTPS ==="
+          curl -Iv --connect-timeout 10 --max-time 15 https://www.google.com/ || true
+
+          echo "=== Judicial main website ==="
+          curl -Iv --connect-timeout 10 --max-time 15 https://www.judicial.gov.tw/ || true
+
+          echo "=== Court schedule website ==="
+          curl -Iv --connect-timeout 10 --max-time 15 https://csdi3.judicial.gov.tw/judbp/wkw/WHD1A03.htm || true
       - name: Check judicial website DNS
         run: |
           python - <<'PY'
