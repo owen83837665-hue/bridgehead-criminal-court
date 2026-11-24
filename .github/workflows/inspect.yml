@@ -13,23 +13,24 @@ jobs:
         run: |
           python - <<'PY'
           import socket
-          import time
 
-          host = "di3.judicial.gov.tw"
+          hosts = [
+              "github.com",
+              "google.com",
+              "judicial.gov.tw",
+              "di3.judicial.gov.tw"
+          ]
 
-          for attempt in range(6):
+          for host in hosts:
               try:
                   result = socket.getaddrinfo(
-                      host, 443, type=socket.SOCK_STREAM
+                      host, 443,
+                      type=socket.SOCK_STREAM
                   )
-                  print("DNS resolution successful:")
-                  print(result)
-                  break
+                  print(f"SUCCESS: {host}")
+                  print(result[0][4])
               except socket.gaierror as e:
-                  print(f"DNS attempt {attempt + 1} failed: {e}")
-                  if attempt == 5:
-                      raise
-                  time.sleep(10)
+                  print(f"FAILED: {host} - {e}")
           PY
       - name: Checkout repository
         uses: actions/checkout@v4
