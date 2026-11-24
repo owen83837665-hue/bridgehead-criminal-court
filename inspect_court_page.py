@@ -5,7 +5,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 
-URL = "https://di3.judicial.gov.tw/"
+URL = "https://csdi3.judicial.gov.tw/judbp/wkw/WHD1A03.htm"
 HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; CourtScheduleResearch/1.0)"}
 
 def main():
